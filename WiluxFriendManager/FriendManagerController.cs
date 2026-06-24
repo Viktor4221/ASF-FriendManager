@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using ArchiSteamFarm.IPC.Controllers.Api;
 using ArchiSteamFarm.IPC.Responses;
 using ArchiSteamFarm.Steam;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace FriendManager;
 
@@ -15,10 +15,11 @@ public sealed class FriendManagerController : ArchiController {
 	///     Adds a friend.
 	/// </summary>
 	[HttpPost("{botName:required}/friends/add")]
-	[SwaggerOperation(Summary = "Adds a friend.", Description = "Add a friend with IPC.")]
+	[EndpointSummary("Adds a friend.")]
+	[EndpointDescription("Add a friend with IPC.")]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.BadRequest)]
-	public async Task<ActionResult<GenericResponse>> Addfriend(string botName, [Required] [FromBody] string NamesOrIDS) {
+	public async Task<ActionResult<GenericResponse>> Addfriend([Description("Bot name")] string botName, [Required] [FromBody] string NamesOrIDS) {
 		if (string.IsNullOrEmpty(botName)) {
 			return BadRequest(new GenericResponse(false, "Bot is not defined."));
 		}
@@ -42,10 +43,11 @@ public sealed class FriendManagerController : ArchiController {
 	///     Removes a friend.
 	/// </summary>
 	[HttpPost("{botName:required}/friends/remove")]
-	[SwaggerOperation(Summary = "Removes a friend.", Description = "Remove a friend with IPC.")]
+	[EndpointSummary("Removes a friend.")]
+	[EndpointDescription("Remove a friend with IPC.")]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.BadRequest)]
-	public async Task<ActionResult<GenericResponse>> Remfriend(string botName, [Required] [FromBody] string NamesOrIDS) {
+	public async Task<ActionResult<GenericResponse>> Remfriend([Description("Bot name")] string botName, [Required] [FromBody] string NamesOrIDS) {
 		if (string.IsNullOrEmpty(botName)) {
 			return BadRequest(new GenericResponse(false, "Bot is not defined."));
 		}
@@ -69,10 +71,11 @@ public sealed class FriendManagerController : ArchiController {
 	///     Toggle acceptall for bot(s).
 	/// </summary>
 	[HttpPost("{botNames:required}/friends/toggle")]
-	[SwaggerOperation(Summary = "Make a bot accept every request", Description = "Make a bot accept every request with IPC.")]
+	[EndpointSummary("Make a bot accept every request")]
+	[EndpointDescription("Make a bot accept every request with IPC.")]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(GenericResponse), (int) HttpStatusCode.BadRequest)]
-	public async Task<ActionResult<GenericResponse>> Togglefriend(string botNames) {
+	public async Task<ActionResult<GenericResponse>> Togglefriend([Description("Bot name(s)")] string botNames) {
 		if (string.IsNullOrEmpty(botNames)) {
 			return BadRequest(new GenericResponse(false, "Bot is not defined."));
 		}
